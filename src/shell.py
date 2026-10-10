@@ -4,8 +4,9 @@
 class Shell:
     """Хранит состояние сеанса и выполняет команды-заглушки."""
 
-    def __init__(self):
+    def __init__(self, vfs=None):
         """Создать активный сеанс."""
+        self.vfs = vfs
         self.running = True
         self.cwd = "/"
 

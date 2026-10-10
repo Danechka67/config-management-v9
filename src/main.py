@@ -2,6 +2,7 @@
 from src.config import parse_args
 from src.shell import Shell
 from src.startup import run_startup
+from src.vfs import VFS
 
 
 def main():
@@ -15,6 +16,13 @@ def main():
     terminal = Terminal(root, shell, args.vfs.stem)
     terminal.write(f"VFS: {args.vfs}")
     terminal.write(f"Startup: {args.startup}")
+    try:
+        shell.vfs = VFS.load(args.vfs)
+    except (OSError, ValueError, UnicodeError) as error:
+        terminal.write(f"Ошибка загрузки VFS: {error}")
+        terminal.entry.configure(state="disabled")
+        root.mainloop()
+        return
     if args.startup:
         root.after(0, lambda: run_startup(
             args.startup, shell, terminal.run_line, terminal.write))

@@ -1,0 +1,5 @@
+ls /
+cd /docs/course/week1
+ls
+cd /missing
+ls /

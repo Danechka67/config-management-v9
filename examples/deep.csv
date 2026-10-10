@@ -1,0 +1,10 @@
+path,type,content
+/,dir,
+/docs,dir,
+/docs/course,dir,
+/docs/course/week1,dir,
+/docs/course/week1/notes.txt,file,0J/QtdGA0LLQsNGPINGB0YLRgNC+0LrQsArQktGC0L7RgNCw0Y8g0YHRgtGA0L7QutCwCtCi0YDQtdGC0YzRjyDRgdGC0YDQvtC60LAK
+/hello.txt,file,SGVsbG8K
+/log.txt,file,bGluZSAxCmxpbmUgMgpsaW5lIDMKbGluZSA0CmxpbmUgNQpsaW5lIDYKbGluZSA3CmxpbmUgOApsaW5lIDkKbGluZSAxMApsaW5lIDExCmxpbmUgMTIKbGluZSAxMwpsaW5lIDE0CmxpbmUgMTUK
+/empty.txt,file,
+/binary.bin,file,AAECAwQFBgcICQoLDA0ODw==
