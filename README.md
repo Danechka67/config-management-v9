@@ -4,3 +4,5 @@
 Запуск: `python -m src.main`. Требуется Python 3.10+ с Tkinter.
 Тесты: `python -m unittest discover -s tests -v`.
 Демонстрация: введите `ls /`, `cd /docs`, `unknown`, `exit extra`, `exit`.
+
+Этап 2: `--vfs` и `--startup`; ошибки скрипта не останавливают последующие строки. Проверка параметров: `scripts/check_config.sh` или `.bat`.
