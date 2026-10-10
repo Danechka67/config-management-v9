@@ -2,6 +2,7 @@
 from datetime import datetime
 import posixpath
 from src.vfs import VFS
+from src.removal import remove
 
 DEFAULT_TAIL_LINES = 10
 MIN_TAIL_LINES = 0
@@ -17,7 +18,7 @@ class Shell:
         self.cwd = "/"
         self.commands = {"ls": self.ls, "cd": self.cd,
                          "date": self.date, "tail": self.tail,
-                         "exit": self.exit}
+                         "exit": self.exit, "rm": self.rm}
 
     def execute(self, line):
         """Разделить ввод по пробелам, выполнить команду, вернуть вывод."""
@@ -91,3 +92,7 @@ class Shell:
             raise ValueError("exit не принимает аргументы")
         self.running = False
         return "Сеанс завершён"
+
+    def rm(self, args):
+        """Удалить файлы/деревья каталогов только в памяти."""
+        return remove(self.vfs, self.cwd, args)

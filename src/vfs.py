@@ -34,7 +34,11 @@ class VFS:
             reader = csv.DictReader(source)
             if reader.fieldnames != ["path", "type", "content"]:
                 raise ValueError("ожидаются колонки path,type,content")
+            seen = set()
             for row in reader:
+                if row.get("path") in seen:
+                    raise ValueError(f"повтор пути: {row['path']}")
+                seen.add(row.get("path"))
                 vfs._add_row(row)
         vfs._check_parents()
         return vfs

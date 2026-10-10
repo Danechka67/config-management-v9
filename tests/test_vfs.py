@@ -38,7 +38,11 @@ class VFSTest(unittest.TestCase):
                  "path,type,content\n/x,dir,YQ==\n",
                  "path,type,content\n/x,unknown,\n",
                  "path,type,content\n/../x,file,\n",
-                 "path,type,content\n/x,file\n"]
+                 "path,type,content\n/x,file\n",
+                 "path,type,content\n/,dir,\n/,dir,\n",
+                 "path,type,content\n/,file,\n",
+                 "path,type,content\n/a,file,\n/a/x,file,\n",
+                 "path,type,content\n/x,file,,extra\n"]
         for text in cases:
             with self.subTest(text=text), self.assertRaises(ValueError):
                 self.load_text(text)

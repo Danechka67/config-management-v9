@@ -1,0 +1,18 @@
+ls /
+rm /hello.txt
+ls /
+tail /hello.txt
+rm /docs
+rm -r /docs
+ls /
+rm /missing
+rm -f /missing
+rm -rf /
+rm -x /log.txt
+rm
+rm -f
+rm -- /empty.txt
+ls /
+rm /log.txt /binary.bin
+ls /
+date
