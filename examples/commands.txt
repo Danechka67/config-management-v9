@@ -1,0 +1,31 @@
+ls
+ls /docs
+ls /hello.txt
+ls /missing
+ls / /docs
+cd /docs/course/week1
+ls .
+tail notes.txt
+tail -n 1 notes.txt
+cd ..
+cd ../..
+cd
+cd /hello.txt
+cd /missing
+cd / /docs
+date
+date +%Y-%m-%d
+date invalid
+tail /log.txt
+tail -n 3 /log.txt
+tail -n 0 /log.txt
+tail -n 99 /log.txt
+tail /empty.txt
+tail /docs
+tail /missing
+tail -n -1 /log.txt
+tail -n abc /log.txt
+tail
+unknown
+exit extra
+ls
