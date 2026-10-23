@@ -6,6 +6,8 @@ from src.removal import remove
 
 DEFAULT_TAIL_LINES = 10
 MIN_TAIL_LINES = 0
+SINGLE_ARGUMENT_COUNT = 1
+TAIL_COUNT_ARGUMENTS = 3
 
 
 class Shell:
@@ -36,7 +38,7 @@ class Shell:
 
     def ls(self, args):
         """Показать содержимое каталога или имя указанного файла."""
-        if len(args) > 1:
+        if len(args) > SINGLE_ARGUMENT_COUNT:
             raise ValueError("использование: ls [путь]")
         path = self.vfs.resolve(args[0] if args else self.cwd, self.cwd)
         node = self.vfs.require(path)
@@ -49,7 +51,7 @@ class Shell:
 
     def cd(self, args):
         """Перейти по пути; без аргументов перейти в корень VFS."""
-        if len(args) > 1:
+        if len(args) > SINGLE_ARGUMENT_COUNT:
             raise ValueError("использование: cd [путь]")
         path = self.vfs.resolve(args[0] if args else "/", self.cwd)
         self.vfs.require(path, "dir")
@@ -58,7 +60,8 @@ class Shell:
 
     def date(self, args):
         """Показать локальное время ОС, используя необязательный формат."""
-        if len(args) > 1 or (args and not args[0].startswith("+")):
+        if (len(args) > SINGLE_ARGUMENT_COUNT
+                or (args and not args[0].startswith("+"))):
             raise ValueError("использование: date [+формат]")
         pattern = args[0][1:] if args else "%Y-%m-%d %H:%M:%S %z"
         return datetime.now().astimezone().strftime(pattern)
@@ -74,9 +77,10 @@ class Shell:
     @staticmethod
     def _tail_args(args):
         """Разобрать tail ФАЙЛ или tail -n N ФАЙЛ."""
-        if len(args) == 1 and not args[0].startswith("-"):
+        if (len(args) == SINGLE_ARGUMENT_COUNT
+                and not args[0].startswith("-")):
             return DEFAULT_TAIL_LINES, args[0]
-        if len(args) != 3 or args[0] != "-n":
+        if len(args) != TAIL_COUNT_ARGUMENTS or args[0] != "-n":
             raise ValueError("использование: tail [-n N] файл")
         try:
             count = int(args[1])

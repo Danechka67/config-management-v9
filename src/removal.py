@@ -9,11 +9,7 @@ def parse_rm(args):
         if options and arg == "--":
             options = False
         elif options and arg.startswith("-") and arg != "-":
-            flags = set(arg[1:])
-            if not flags or flags - set("rRf"):
-                raise ValueError(f"неизвестная опция rm: {arg}")
-            recursive = recursive or bool(flags & set("rR"))
-            force = force or "f" in flags
+            recursive, force = _merge_rm_flags(arg, recursive, force)
         else:
             options = False
             names.append(arg)
@@ -22,13 +18,26 @@ def parse_rm(args):
     return recursive, force, names
 
 
+def _merge_rm_flags(arg, recursive, force):
+    """Проверить опцию rm и дополнить уже установленные флаги."""
+    flags = set(arg[1:])
+    if not flags or flags - set("rRf"):
+        raise ValueError(f"неизвестная опция rm: {arg}")
+    return recursive or bool(flags & set("rR")), force or "f" in flags
+
+
+def _check_protected_path(path, cwd):
+    """Запретить удаление корня, текущего каталога и его предков."""
+    if path == "/" or cwd == path or cwd.startswith(path + "/"):
+        raise ValueError("нельзя удалить корень/текущий каталог/предка")
+
+
 def removal_targets(vfs, cwd, names, recursive, force):
     """Проверить все пути до удаления; защитить корень и текущий каталог."""
     targets = set()
     for name in names:
         path = vfs.resolve(name, cwd)
-        if path == "/" or cwd == path or cwd.startswith(path + "/"):
-            raise ValueError("нельзя удалить корень/текущий каталог/предка")
+        _check_protected_path(path, cwd)
         if path not in vfs.nodes and force:
             continue
         node = vfs.require(path)

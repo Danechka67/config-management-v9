@@ -45,6 +45,13 @@ class VFS:
 
     def _add_row(self, row):
         """Проверить и добавить запись, декодируя base64 у файлов."""
+        path, kind, content = self._row_fields(row)
+        self._validate_node(path, kind, content)
+        data = base64.b64decode(content, validate=True)
+        self.nodes[path] = Node(kind, data)
+
+    def _row_fields(self, row):
+        """Проверить поля CSV, абсолютный путь и тип узла."""
         if None in row or any(value is None for value in row.values()):
             raise ValueError("неверное число колонок CSV")
         path, kind, content = row["path"], row["type"], row["content"]
@@ -52,14 +59,16 @@ class VFS:
             raise ValueError(f"неканонический абсолютный путь: {path}")
         if kind not in {"file", "dir"}:
             raise ValueError(f"неизвестный тип узла: {kind}")
+        return path, kind, content
+
+    def _validate_node(self, path, kind, content):
+        """Проверить повторы, тип корня и пустое содержимое каталога."""
         if path in self.nodes and path != "/":
             raise ValueError(f"повтор пути: {path}")
         if path == "/" and kind != "dir":
             raise ValueError("корень должен быть каталогом")
         if kind == "dir" and content:
             raise ValueError("каталог не должен содержать данные")
-        data = base64.b64decode(content, validate=True)
-        self.nodes[path] = Node(kind, data)
 
     def _check_parents(self):
         """Запретить узлы без родительского каталога."""
